@@ -23,6 +23,6 @@ make run
 ```
 
 - 起動の確認
-  - `http://localhost:8000/docs`にアクセスして、FastAPIのドキュメントが表示されればOKです
+  - `http://localhost:8080/docs`にアクセスして、FastAPIのドキュメントが表示されればOKです
   - `http://localhost:5601`にアクセスして、OpenSearch Dashboardsの画面が表示されればOKです
   - `http://localhost:9200`にアクセスして、OpenSearchからのレスポンスが確認できればOKです
