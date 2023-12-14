@@ -1,0 +1,67 @@
+services:
+  api:
+    build:
+      context: ./api/
+      args:
+        - POETRY_EXPORT_OPTIONS=--with dev
+    depends_on:
+      opensearch:
+        condition: service_healthy
+      postgis:
+        condition: service_healthy
+    environment:
+      - DEBUG=1
+      - ECHO_SQL=1
+    ports:
+      - 8080:8080
+    command:
+      - /bin/bash
+      - -c
+      - |
+        uvicorn sample:app --host 0.0.0.0 --port 8080 --reload --reload-dir ./src
+    volumes:
+      - ./api/:/app
+
+  opensearch:
+    build:
+      context: ./opensearch/
+    ports:
+      - 9200:9200
+    volumes:
+      - es-data:/var/lib/opensearch/data
+    healthcheck:
+      test: curl -s https://localhost:9200 -ku admin:admin >/dev/null || exit 1
+      interval: 2s
+      timeout: 5s
+      retries: 50
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.11.1
+    container_name: opensearch-dashboards
+    environment:
+      OPENSEARCH_HOSTS: "https://opensearch:9200"
+    ports:
+      - 5601:5601
+    links:
+      - opensearch
+
+  postgis:
+    build:
+      context: ./postgis/
+    ports:
+      - 15432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgis-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U "${POSTGRES_USER:-postgres}" || exit 1
+      interval: 2s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  es-data:
+  postgis-data:
