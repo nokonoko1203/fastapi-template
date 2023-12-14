@@ -2,11 +2,10 @@ from typing import Annotated
 
 from fastapi import Depends, Request
 from opensearchpy import AsyncOpenSearch
-
 from sample.config import settings
 
 
-def get_elasticsearch(request: Request) -> AsyncOpenSearch:
+def get_opensearch(request: Request) -> AsyncOpenSearch:
     auth = (settings.opensearch_master_user, settings.opensearch_master_password)
     return AsyncOpenSearch(
         settings.opensearch_url,
@@ -18,4 +17,4 @@ def get_elasticsearch(request: Request) -> AsyncOpenSearch:
     )
 
 
-Elasticsearch = Annotated[AsyncOpenSearch, Depends(get_elasticsearch)]
+Opensearch = Annotated[AsyncOpenSearch, Depends(get_opensearch)]
