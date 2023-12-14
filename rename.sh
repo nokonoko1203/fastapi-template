@@ -13,4 +13,3 @@ sed -i "" "s/$oldname/$newname/g" api/src/$newname/services/opensearch.py
 sed -i "" "s/$oldname/$newname/g" api/tests/test_sample.py
 sed -i "" "s/$oldname/$newname/g" README.md
 sed -i "" "s/$oldname/$newname/g" docker-compose.yml
-sed -i "" "s/$oldname/$newname/g" .github/workflows/deploy.yml
