@@ -9,7 +9,7 @@ packages = [{ include = "sample", from = "src" }]
 include = [{ path = "tests", format = "sdist" }]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 fastapi = {extras = ["all"], version = "^0.105.0"}
 requests = "^2.31.0"
 sqlalchemy = "^2.0.23"
